@@ -1,33 +1,41 @@
 #Magento utility docker file
-ARG PHP_VERSION=php:8.0-fpm-alpine
+ARG PHP_VERSION=php:7.4-fpm
 
 FROM ${PHP_VERSION}
 
-WORKDIR /var/www/html
+WORKDIR /var/www/html/magento
 
-#Install php extentions
-RUN docker-php-install pdo pdo_mysql \
-    bcmath \
-    ctype \
-    curl \
-    dom \
-    gd \
-    hash \
-    iconv \
-    intl \
-    mbstring \
-    openssl \
-    pdo_mysql \
-    simplexml \
-    soap \
-    xsl \
-    zip 
+# Install dependencies
+RUN apt-get update \
+  && apt-get install -y \
+    libfreetype6-dev \ 
+    libicu-dev \ 
+    libjpeg62-turbo-dev \ 
+    libmcrypt-dev \ 
+    libpng-dev \ 
+    libxslt1-dev \ 
+    sendmail-bin \ 
+    sendmail \ 
+    sudo \ 
+    libzip-dev \ 
+    libonig-dev
 
-#Install package
-RUN apk add --no-cache \
-    vim \
-    telnet \
-    netcat \
-    git-core \
-    zip
-    
+# Configure the gd library
+RUN docker-php-ext-configure \
+  gd --with-freetype --with-jpeg
+
+# Install required PHP extensions
+RUN docker-php-ext-install \
+  dom \ 
+  gd \ 
+  intl \ 
+  mbstring \ 
+  pdo_mysql \ 
+  xsl \ 
+  zip \ 
+  soap \ 
+  bcmath \ 
+  pcntl \ 
+  sockets
+
+ENTRYPOINT [ "bin/magento" ]

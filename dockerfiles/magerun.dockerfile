@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-
+WORKDIR /var/www/html/magento
 #Install tools
 #Install package
 RUN apk add --no-cache \

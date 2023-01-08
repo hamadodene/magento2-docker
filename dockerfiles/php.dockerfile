@@ -1,32 +1,47 @@
-ARG PHP_VERSION=php:8.0-fpm-alpine
+ARG PHP_VERSION=php:7.4-fpm-alpine
 
 FROM ${PHP_VERSION}
 
-WORKDIR /var/www/html
+WORKDIR /var/www/html/magento
 
-RUN docker-php-install pdo pdo_mysql \
-    bcmath \
-    ctype \
-    curl \
-    dom \
-    gd \
-    hash \
-    iconv \
-    intl \
-    mbstring \
-    openssl \
-    pdo_mysql \
-    simplexml \
-    soap \
-    xsl \
-    zip 
+# Install dependencies
+RUN apt-get update \
+  && apt-get install -y \
+    libfreetype6-dev \ 
+    libicu-dev \ 
+    libjpeg62-turbo-dev \ 
+    libmcrypt-dev \ 
+    libpng-dev \ 
+    libxslt1-dev \ 
+    sendmail-bin \ 
+    sendmail \ 
+    sudo \ 
+    libzip-dev \ 
+    libonig-dev
 
-RUN addgroup -g 1000 magento && adduser -G magento -g magento -s /bin/sh -D magento
+# Configure the gd library
+RUN docker-php-ext-configure \
+  gd --with-freetype --with-jpeg
 
-USER magento
+# Install required PHP extensions
 
-RUN chown -R magento:magento /var/www/html
+RUN docker-php-ext-install \
+  dom \ 
+  gd \ 
+  intl \ 
+  mbstring \ 
+  pdo_mysql \ 
+  xsl \ 
+  zip \ 
+  soap \ 
+  bcmath \ 
+  pcntl \ 
+  sockets
 
-USER magento
+RUN chown -R www-data:www-data /var/www/html/magento
+
+# Configure
+COPY ./config/php/php.ini /usr/local/etc/php/php.ini
+COPY ./config/php/php-fpm.conf /usr/local/etc/
 
 ENTRYPOINT [ "php" ]
