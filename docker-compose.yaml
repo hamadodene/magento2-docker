@@ -28,6 +28,8 @@ services:
         dockerfile: magento.dockerfile
     volumes:
       - ./magento:/var/www/html/magento
+    env_file:
+      - ./env/magento.env  
   composer:
     build: 
       context: ./dockerfiles

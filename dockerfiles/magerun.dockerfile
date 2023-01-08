@@ -1,15 +1,12 @@
-FROM alpine:latest
+ARG PHP_VERSION=php:7.4-fpm
+
+FROM ${PHP_VERSION}
 
 WORKDIR /var/www/html/magento
-#Install tools
-#Install package
-RUN apk add --no-cache \
-    vim \
-    telnet \
-    netcat \
-    git-core \
-    zip \
-    curl
+
+# Install dependencies
+RUN apt-get update \
+  && apt-get install -y curl 
 
  # Install magerun
 RUN curl -o magerun https://raw.githubusercontent.com/netz98/n98-magerun/master/n98-magerun.phar && \
