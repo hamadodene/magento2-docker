@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# Dowload magento package from repo
+# Setup permission folder
+# Run magento install comando to inizialize data to DB
+# Install sample data
+

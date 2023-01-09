@@ -1,41 +1,54 @@
-#Magento utility docker file
-ARG PHP_VERSION=php:7.4-fpm
+ARG PHP_VERSION=7.4
 
-FROM ${PHP_VERSION}
+FROM  php:${PHP_VERSION}-fpm-alpine
 
-WORKDIR /var/www/html/magento
+#Install tools
+RUN apk add --update --no-cache \
+    curl \
+    wget \
+	nginx \
+	zlib-dev \
+	libpng-dev \
+	icu-dev \
+	libxml2-dev \
+	libxslt-dev \
+	libzip-dev
 
-# Install dependencies
-RUN apt-get update \
-  && apt-get install -y \
-    libfreetype6-dev \ 
-    libicu-dev \ 
-    libjpeg62-turbo-dev \ 
-    libmcrypt-dev \ 
-    libpng-dev \ 
-    libxslt1-dev \ 
-    sendmail-bin \ 
-    sendmail \ 
-    sudo \ 
-    libzip-dev \ 
-    libonig-dev
+#Install php extension
+RUN docker-php-ext-install pdo pdo_mysql \
+  	opcache \
+  	bcmath \
+  	gd \
+  	intl \
+  	mysqli \
+  	pdo_mysql \
+  	soap \
+  	xsl \
+  	zip \
+  	sockets
 
-# Configure the gd library
-RUN docker-php-ext-configure \
-  gd --with-freetype --with-jpeg
+# Install composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Install required PHP extensions
-RUN docker-php-ext-install \
-  dom \ 
-  gd \ 
-  intl \ 
-  mbstring \ 
-  pdo_mysql \ 
-  xsl \ 
-  zip \ 
-  soap \ 
-  bcmath \ 
-  pcntl \ 
-  sockets
+ # Install magerun
+RUN curl -o magerun https://raw.githubusercontent.com/netz98/n98-magerun/master/n98-magerun.phar && \
+    chmod +x ./magerun && \
+    ./magerun selfupdate && \
+    cp ./magerun /usr/local/bin/ && \
+    rm ./magerun && \
+	rm ./n98-magerun.phar 
 
-ENTRYPOINT [ "bin/magento" ]
+#Copy configuration
+COPY ./config/php.ini /usr/local/etc/php/php.ini
+
+# Setup workdir
+WORKDIR /var/www/html
+
+#User for app
+RUN addgroup -S www-data www-data
+
+RUN chown -R www-data:www-data /var/www/html
+
+EXPOSE 80
+
+ CMD ["nginx", "-g", "daemon off;"]
