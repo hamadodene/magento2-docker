@@ -42,7 +42,7 @@ RUN curl -o magerun https://raw.githubusercontent.com/netz98/n98-magerun/master/
 COPY ./config/php.ini /usr/local/etc/php/php.ini
 RUN sed -i \
   -e "s/listen = 127.0.0.1:9000/listen = \/var\/run\/php-fpm.sock/g" \
-  -e "s/;listen.mode = 0660/listen.mode = 0666/g" \
+  -e "s/;listen.mode = 066/listen.mode = 0666/g" \
   /usr/local/etc/php-fpm.d/www.conf
 
 # Nginx configuration
