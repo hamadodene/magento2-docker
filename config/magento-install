@@ -1,16 +1,8 @@
 #!/usr/bin/env bash
 
-PROJECT_NAME=$1
-BASE_URL = $2
-DB_NAME=$3
-DB_USER=$4
-DB_PASSWORD=$5
-ADMIN_EMAIL=$6
-
-
- if [[ z $PROJECT_NAME || -z $BASE_URL  || -z DB_NAME || -z DB_USER || -Z DB_PASSWORD || -z ADMIN_EMAIL]] then
-    echo "Some argument are missing, please check."
-    echo "magento-install <magento_version> <project_name> <base_url> <db_name> <db_user> <db_password> <admin_email>"
+ if [[ z $PROJECT_NAME || -z $BASE_URL  || -z $DB_NAME || -z $DB_USER || -Z $DB_PASSWORD || -z $ADMIN_EMAIL]] then
+    echo "Some value are missing, please check."
+    echo "Please compile env file before start container"
  fi
 
 cd /var/www/html
