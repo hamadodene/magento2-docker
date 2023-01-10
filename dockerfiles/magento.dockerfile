@@ -40,10 +40,7 @@ RUN curl -o magerun https://raw.githubusercontent.com/netz98/n98-magerun/master/
 
 #Php configuration
 COPY ./config/php.ini /usr/local/etc/php/php.ini
-RUN sed -i \
-  -e "s/listen = 127.0.0.1:9000/listen = \/var\/run\/php-fpm.sock/g" \
-  -e "s/;listen.mode = 066/listen.mode = 0666/g" \
-  /usr/local/etc/php-fpm.d/www.conf
+COPY ./config/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 
 # Nginx configuration
 WORKDIR /etc/nginx/http.d
@@ -66,4 +63,3 @@ RUN chown -R www-data:www-data /var/www/html
 EXPOSE 80
 
 CMD ["/bin/sh", "-c", "php-fpm && chmod 777 /var/run/php-fpm.sock && nginx -g 'daemon off;'"]
-#  CMD ["nginx", "-g", "daemon off;"]
