@@ -65,5 +65,5 @@ RUN chown -R www-data:www-data /var/www/html
 
 EXPOSE 80
 
-CMD ["/bin/bash", "-c", "php-fpm && chmod 777 /var/run/php/php-fpm.sock && nginx -g 'daemon off;'"]
+CMD ["/bin/bash", "-c", "php-fpm && chmod 777 /var/run/php-fpm.sock && nginx -g 'daemon off;'"]
 #  CMD ["nginx", "-g", "daemon off;"]
