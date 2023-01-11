@@ -12,7 +12,7 @@ services:
     container_name: "reverse-proxy"
     volumes:
         - "/run/docker.sock:/tmp/docker.sock:ro"
-        - "reversevolume:/etc/nginx
+        - "reversevolume:/etc/nginx"
     restart: "always"
     networks:
         - "nginxproxy-net"
