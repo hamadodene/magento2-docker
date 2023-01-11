@@ -6,12 +6,15 @@ networks:
 
 services:
   reverse-proxy:
-    image: "nginxproxy/nginx-proxy:latest"
+    build:
+        context: .
+        dockerfile: reverse-proxy.dockerfile
     container_name: "reverse-proxy"
     volumes:
         - "/run/docker.sock:/tmp/docker.sock:ro"
+        - "reversevolume:/etc/nginx
     restart: "always"
-    networks: 
+    networks:
         - "nginxproxy-net"
     ports:
         - "80:80"

@@ -1,0 +1,31 @@
+version: "3.9"
+
+networks:
+  dbnetwork:
+    external: true
+  elasticnet:
+    external: true
+
+services:
+  mariadb:
+    image: docker.io/bitnami/mariadb:10.4
+    env_file:
+      - ./env/mariadb.env
+    volumes:
+      - "mariadb_data:/bitnami/mariadb"
+    networks:
+      - "dbnetwork"
+  elasticsearch:
+    image: docker.io/bitnami/elasticsearch:7
+    volumes:
+      - "elasticsearch_data:/bitnami/elasticsearch/data"
+    env_file:
+      - ./env/elastic.env
+    networks:
+      - "elasticnet"
+
+volumes:
+  mariadb_data:
+    driver: local
+  elasticsearch_data:
+    driver: local

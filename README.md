@@ -1,36 +1,31 @@
+This repo allows you to initialize multiple magento containers on the same machine.
 
-https://linuxhandbook.com/nginx-reverse-proxy-docker/
-
-https://github.com/nginx-proxy/nginx-proxy
-
-https://github.com/echo-magento/docker-magento2
+The architecture can be seen as the following:
 
 
-Con questo posso avere un singolo reverse nginx con molteplici container magento, ognuno con il proprio virtual host
+The elastisearch, mariadb and reverse-proxy services need to be started only at the first server setup.
+The steps for the first setup is as follows:
 
-# Idea
-
-- Uno script che scarica magento e fa tutto il setup
-- Un Dockerfile che fa partire nginx con php,magerun e composer
-- Un Dockerfile per Mysql
-- Un Dockerfile per elasticsearch
-
-# Starting process
-
-- Use composer utility to dowload magento version you need or dowload it manually where you want and copy all files in src folder
+- clone this repository
+- Start reverse proxy
 ```
-docker compose build composer
-docker compose run composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition .
+cd reverse-proxy
+docker compose up -d
 ```
+- start elasticsearch and mariadb
+```
+cd components
+docker compose up -d
+```
+You may need to change the mariadb and elasticsearch environment variables. Feel free to do this by editing the **mariadb.env** and **elastic.env** files.
 
-- Build container for run magento and start container
-```
-# note: edit VIRTUAL_HOST to setup the right host for you
-docker composer build magento
-docker compose run magento
-```
+- Now you can start your magento.
 
-- Run script magento install to install all things need for magento.
+The magento container is based on the bitnami magento image that you can find on the official bitnami repo (https://hub.docker.com/r/bitnami/magento/). Also in this case a **magento.env** file is provided to act on the configuration. For the available configs see the official bitnami magento repo.
+
+Important note: If you want to start more magento containers, it is advisable to provide a new container name, a new MAGENTO_HOST , a new VIRTUAL_HOST and of course a new MAGENTO_DATABASE_NAME.
+
 ```
-docker exec -it magento_container_name magento-install project_name base_url db_name db_user db_password admin_email
+cd magento
+docker compose up -d
 ```

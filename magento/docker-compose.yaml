@@ -1,0 +1,30 @@
+version: "3.9"
+networks:
+  nginxproxy-net:
+    external: true
+  dbnetwork:
+    external: true
+  elasticnet:
+    external: true
+
+services:
+  magento:
+    image: docker.io/bitnami/magento
+    env_file:
+      - ./env/magento.env
+    volumes:
+      - "magento_data:/bitnami/magento"
+    depends_on:
+      - mariadb
+      - elasticsearch
+    networks:
+      - "nginxproxy-net"
+      - "dbnetwork"
+      - "elasticnet"
+volumes:
+  mariadb_data:
+    driver: local
+  magento_data:
+    driver: local
+  elasticsearch_data:
+    driver: local

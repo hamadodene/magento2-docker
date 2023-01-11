@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-# First setup on magento dev enviroment
-# This will start mysql, elastic and setup a default magento enviroment

@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-# Stop container
-# argument --> container name
