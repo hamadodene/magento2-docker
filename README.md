@@ -1,6 +1,7 @@
 This repo allows you to initialize multiple magento containers on the same machine.
 
 The architecture can be seen as the following:
+![magento_dev drawio](https://user-images.githubusercontent.com/43852233/211872788-51f124f6-5382-4947-9738-9a1f4dc9efcc.png)
 
 
 The elastisearch, mariadb and reverse-proxy services need to be started only at the first server setup.
