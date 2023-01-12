@@ -14,9 +14,6 @@ services:
       - ./env/magento.env
     volumes:
       - "magento_data:/bitnami/magento"
-    depends_on:
-      - mariadb
-      - elasticsearch
     networks:
       - "nginxproxy-net"
       - "dbnetwork"
