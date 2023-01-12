@@ -1,0 +1,37 @@
+#!/bin/bash
+
+echo "Enter base path"
+read BASE_PATH
+
+if [ ! -d $BASE_PATH ] 
+then
+    echo "Directory $BASE_PATH DOES NOT exists." 
+    exit 1
+fi
+
+echo "Enter project name"
+read PROJECT_NAME
+
+#Create project directory
+PROJECT_PATH = $BASE_PATH/$PROJECT_NAME
+mkdir $PROJECT_PATH
+
+echo "Enter magento host"
+read MAGENTO_HOST
+
+echo "enter magento version"
+read MAGENTO_VERSION
+
+#Copy compose file and enviroment file to PROJECT PATH
+cp -r magento/. $PROJECT_PATH
+
+# move to project path
+cd $PROJECT_PATH
+
+sed -i "s/MAGENTO_HOST=local.test/MAGENTO_HOST=$MAGENTO_HOST/g" env/magento.env
+sed -i "s/VIRTUAL_HOST=local.test/VIRTUAL_HOST=$MAGENTO_HOST/g" env/magento.env
+sed -i "s/MAGENTO_DATABASE_NAME=magento/MAGENTO_DATABASE_NAME=$PROJECT_NAME/g" env/magento.env
+sed -i "s/magento_data/$PROJECT_NAME/g" docker-compose.yaml
+
+
+docker compose up -d

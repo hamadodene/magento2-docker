@@ -1,0 +1,11 @@
+#!/bin/bash
+
+REPO_PATH = $(pwd)
+
+# start reverse proxy
+cd reverse-proxy
+docker compose up -d
+
+# start composents
+cd $REPO_PATH/components
+docker compose up -d
