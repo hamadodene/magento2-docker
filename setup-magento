@@ -28,6 +28,7 @@ cp -r magento/. $PROJECT_PATH
 # move to project path
 cd $PROJECT_PATH
 
+sed -i "s/MAGENTO_VERSION=latest/MAGENTO_VERSION=$MAGENTO_VERSION/g" env/magento.env
 sed -i "s/MAGENTO_HOST=local.test/MAGENTO_HOST=$MAGENTO_HOST/g" env/magento.env
 sed -i "s/VIRTUAL_HOST=local.test/VIRTUAL_HOST=$MAGENTO_HOST/g" env/magento.env
 sed -i "s/MAGENTO_DATABASE_NAME=magento/MAGENTO_DATABASE_NAME=$PROJECT_NAME/g" env/magento.env
