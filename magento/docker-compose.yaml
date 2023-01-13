@@ -8,13 +8,14 @@ networks:
     external: true
 
 services:
-  magento:
+  service_name:
     image: docker.io/bitnami/magento:${MAGENTO_VERSION}
     container_name: container-name
     env_file:
       - ./env/magento.env
     volumes:
       - "magento_data:/bitnami/magento"
+      - "./auth/auth.json:/bitnami/magento/auth.json:rw"
     networks:
       - "nginxproxy-net"
       - "dbnetwork"

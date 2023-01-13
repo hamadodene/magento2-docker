@@ -14,7 +14,8 @@ read PROJECT_NAME
 
 #Create project directory
 PROJECT_PATH=$BASE_PATH/$PROJECT_NAME
-if [-d $BASE_PATH ] 
+
+if [ -d $PROJECT_PATH ] 
 then
     echo "Directory already exist." 
     exit 1
@@ -41,12 +42,14 @@ cp -r magento/. $PROJECT_PATH
 # move to project path
 cd $PROJECT_PATH
 
-sed -i "s/MAGENTO_VERSION=latest/MAGENTO_VERSION=$MAGENTO_VERSION/g" env/magento.env
+sed -i "s/MAGENTO_VERSION=latest/MAGENTO_VERSION=$MAGENTO_VERSION/g" .env
 sed -i "s/MAGENTO_HOST=local.test/MAGENTO_HOST=$MAGENTO_HOST/g" env/magento.env
 sed -i "s/VIRTUAL_HOST=local.test/VIRTUAL_HOST=$MAGENTO_HOST/g" env/magento.env
 sed -i "s/MAGENTO_DATABASE_NAME=magento/MAGENTO_DATABASE_NAME=$PROJECT_NAME/g" env/magento.env
 sed -i "s/magento_data/$PROJECT_NAME/g" docker-compose.yaml
 sed -i "s/container-name/$PROJECT_NAME/g" docker-compose.yaml
+sed -i "s/service-name/$PROJECT_NAME/g" docker-compose.yaml
+
 
 #Create database
 docker exec -i mariadb mysql -u magento -e "create database $PROJECT_NAME"
