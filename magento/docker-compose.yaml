@@ -10,6 +10,7 @@ networks:
 services:
   magento:
     image: docker.io/bitnami/magento:${MAGENTO_VERSION}
+    container_name: ${MAGENTO_VERSION}
     env_file:
       - ./env/magento.env
     volumes:
