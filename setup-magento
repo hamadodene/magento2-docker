@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Enter base path"
+echo "ENTER BASE PATH"
 read BASE_PATH
 
 if [ ! -d $BASE_PATH ] 
@@ -9,17 +9,24 @@ then
     exit 1
 fi
 
-echo "Enter project name"
+echo "ENTER PROJECT NAME"
 read PROJECT_NAME
 
 #Create project directory
 PROJECT_PATH=$BASE_PATH/$PROJECT_NAME
 mkdir $PROJECT_PATH
 
-echo "Enter magento host"
+if [ ! -d $PROJECT_PATH ] 
+then
+    echo "Directory $PROJECT_PATH does not created. Please check" 
+    exit 1
+fi
+
+
+echo "ENTER MAGENTO HOST"
 read MAGENTO_HOST
 
-echo "enter magento version"
+echo "ENTER MAGENTO VERSION"
 read MAGENTO_VERSION
 
 #Copy compose file and enviroment file to PROJECT PATH
@@ -33,8 +40,17 @@ sed -i "s/MAGENTO_HOST=local.test/MAGENTO_HOST=$MAGENTO_HOST/g" env/magento.env
 sed -i "s/VIRTUAL_HOST=local.test/VIRTUAL_HOST=$MAGENTO_HOST/g" env/magento.env
 sed -i "s/MAGENTO_DATABASE_NAME=magento/MAGENTO_DATABASE_NAME=$PROJECT_NAME/g" env/magento.env
 sed -i "s/magento_data/$PROJECT_NAME/g" docker-compose.yaml
-
-
-docker exec -i  mariadb -umagento <<< create database $PROJECT_NAME
+sed -i "s/container/$PROJECT_NAME/g" docker-compose.yaml
+-name
+#Create database
+docker exec -i mariadb mysql -u magento -e "create database $PROJECT_NAME"
 
 docker compose up -d
+
+if [ $( docker ps -a | grep $PROJECT_NAME | wc -l ) -gt 0 ]; then  
+  echo "use comand: docker logs -f $PROJECT_NAME to check if all is ok"
+  echo "Remember to create url $MAGENTO_HOST to be able to connect to magento"
+else
+  echo "magento seems not to be started. Please check with docker command "
+fi
+
