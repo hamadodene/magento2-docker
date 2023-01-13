@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # start reverse proxy
-docker compose up -f reverse-proxy/docker-compose.yml -d
+docker compose -f reverse-proxy/docker-compose.yaml up -d
 
 # start composents
-docker compose up -f components/docker-compose.yml -d
+docker compose -f components/docker-compose.yaml up -d
