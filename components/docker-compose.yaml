@@ -18,13 +18,12 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     ports:
-      - "8081:80"
+      - "8080:80"
     networks:
       - "dbnetwork"
     depends_on:
       - mariadb
     environment:
-      - PMA_ARBITRARY=1
       - PMA_HOST=mariadb
   elasticsearch:
     image: docker.io/bitnami/elasticsearch:7
