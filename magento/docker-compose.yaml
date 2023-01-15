@@ -15,7 +15,6 @@ services:
       - ./env/magento.env
     volumes:
       - "magento_data:/bitnami/magento"
-      - "./auth/auth.json:/bitnami/magento/auth.json:rw"
     networks:
       - "nginxproxy-net"
       - "dbnetwork"
