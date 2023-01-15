@@ -42,18 +42,18 @@ If you decide to make changes you will obviously need to edit the script.
 
 #### Create admin user
 ```
-docker exec -i $container_name  php bin/magento admin:user:create --admin-user=admin --admin-password=admin123 --admin-email=admin@example.com --admin-firstname=admin --admin-lastname=admin
+docker exec -u daemon -w /bitnami/magento  -i $container_name  php bin/magento admin:user:create --admin-user=admin --admin-password=admin123 --admin-email=admin@example.com --admin-firstname=admin --admin-lastname=admin
 ```
 #### Add new reposity in composer.json file
 ```
-docker exec -i $container_name composer config repositories.repo-name vcs https://github.com/<orgname or username>/repo
+docker exec -u daemon  -w /bitnami/magento -i $container_name composer config repositories.repo-name vcs https://github.com/<orgname or username>/repo
 ```
 #### Add magento auth and github auth
 
 ```
-docker exec -i $container_name composer config http-basic.repo.magento.com <public_key> <private_key>
+docker exec  -u daemon -w /bitnami/magento -i $container_name composer config http-basic.repo.magento.com <public_key> <private_key>
 ```
 
 ```
-docker exec -i $container_name composer config github-oauth.github.com <github_token>
+docker exec -u daemon -w /bitnami/magento -i $container_name composer config github-oauth.github.com <github_token>
 ```
