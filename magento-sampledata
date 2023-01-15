@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONTAINER_NAME = $1
+CONTAINER_NAME=$1
 
 
 docker exec  -u daemon -w /bitnami/magento -i $CONTAINER_NAME php bin/magento setup:upgrade
