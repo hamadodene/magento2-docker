@@ -48,7 +48,7 @@ sed -i "s/VIRTUAL_HOST=local.test/VIRTUAL_HOST=$MAGENTO_HOST/g" env/magento.env
 sed -i "s/MAGENTO_DATABASE_NAME=magento/MAGENTO_DATABASE_NAME=$PROJECT_NAME/g" env/magento.env
 sed -i "s/magento_data/$PROJECT_NAME/g" docker-compose.yaml
 sed -i "s/container-name/$PROJECT_NAME/g" docker-compose.yaml
-sed -i "s/service-name/$PROJECT_NAME/g" docker-compose.yaml
+sed -i "s/service_name/$PROJECT_NAME/g" docker-compose.yaml
 
 
 #Create database
