@@ -3,12 +3,10 @@
 CONTAINER_NAME = $1
 
 
-docker exec -w /bitnami/magento -i $CONTAINER_NAME php bin/magento setup:upgrade
-docker exec -w /bitnami/magento -i $CONTAINER_NAME php bin/magento setup:static-content:deploy -f
-docker exec -w /bitnami/magento  -i $CONTAINER_NAME php bin/magento setup:di:compile
-docker exec -w /bitnami/magento  -i $CONTAINER_NAME php bin/magento cache:flush
-docker exec -w /bitnami/magento  -i $CONTAINER_NAME php bin/magento indexer:reindex 
+docker exec  -u daemon -w /bitnami/magento -i $CONTAINER_NAME php bin/magento setup:upgrade
+docker exec  -u daemon  -w /bitnami/magento -i $CONTAINER_NAME php bin/magento setup:static-content:deploy -f
+docker exec  -u daemon  -w /bitnami/magento  -i $CONTAINER_NAME php bin/magento setup:di:compile
+docker exec  -u daemon  -w /bitnami/magento  -i $CONTAINER_NAME php bin/magento cache:flush
+docker exec  -u daemon  -w /bitnami/magento  -i $CONTAINER_NAME php bin/magento indexer:reindex 
 
-# Fix permission
-docker exec -w /bitnami/magento  -i $CONTAINER_NAME chown -R daemon.root /bitnami/magento/*
  
