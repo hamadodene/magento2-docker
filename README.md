@@ -49,11 +49,11 @@ docker exec -i $container_name  php bin/magento admin:user:create --admin-user=a
 docker exec -i $container_name composer config repositories.repo-name vcs https://github.com/<orgname or username>/repo
 ```
 #### Add magento auth and github auth
-To set auth for magento and github or for any kind of auth you need to configure the auth/auth.json file before starting the container.
 
-If you modify the file during use, you have to recreate the container:
 ```
-#Move to project path and run command
-docker compose up -d --force-recreate
+docker exec -i $container_name composer config http-basic.repo.magento.com <public_key> <private_key>
 ```
-Note: you don't lose anything, the data is saved in a docker named volume.
+
+```
+docker exec -i $container_name composer config github-oauth.github.com <github_token>
+```
