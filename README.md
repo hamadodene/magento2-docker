@@ -23,7 +23,10 @@ Use docker command to check If everything is ok. Commands like:
 
 You may need to change the mariadb and elasticsearch environment variables. Feel free to do this by editing the **mariadb.env** and **elastic.env** files.
 
-## Sart magento
+You might need to change the permissions of the magento user before creating a magento container.
+To do this you can connect to the phpmyadmin interface to set the permissions.
+
+## Start magento
 
 The magento container is based on the bitnami magento image that you can find on the official bitnami repo (https://hub.docker.com/r/bitnami/magento/). Also in this case a **magento.env** file is provided to act on the configuration. For the available configs see the official bitnami magento repo.
 
