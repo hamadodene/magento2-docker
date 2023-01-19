@@ -2,7 +2,8 @@
 
 CONTAINER_NAME=$1
 
-docker exec -w /bitnami/magento -i $CONTAINER_NAME php bin/magento sampledata:deploy
+# You can change memory limit if you want set a limit. -1 = Infinite Memory Limit
+docker exec -w /bitnami/magento -i $CONTAINER_NAME php -d memory_limit=-1  bin/magento sampledata:deploy
 docker exec -w /bitnami/magento -i $CONTAINER_NAME php bin/magento setup:upgrade
 docker exec -w /bitnami/magento  -i $CONTAINER_NAME php bin/magento setup:di:compile
 docker exec -w /bitnami/magento  -i $CONTAINER_NAME php bin/magento indexer:reindex 
